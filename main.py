@@ -24,7 +24,7 @@ def get_recommendations_for_artist(artist):
             track_ids.append("spotify:track:" + track['id'])
 
     track_number = int(input("How many tracks would you like?\n"))
-    new_track_ids = list( dict.fromkeys(track_ids) ) # turn track_ids list into a dictionary and back to remove duplicates
+    new_track_ids = list( dict.fromkeys(track_ids) ) # turn track_ids list into a dictionary and back to remove
     final_list = new_track_ids[:track_number] 
 
     return final_list
