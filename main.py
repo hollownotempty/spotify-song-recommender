@@ -3,7 +3,6 @@ from pathlib import Path
 from spotipy.oauth2 import SpotifyOAuth
 
 import argparse
-import logging
 
 import spotipy 
 import os
