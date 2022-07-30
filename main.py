@@ -20,12 +20,16 @@ def get_artist(name):
 
 def get_recommendations_for_artist(artist):
     track_ids = []
-    for i in range(5):
+    for i in range(10):
         results = sp.recommendations(seed_artists=[artist['id']])
         for track in results['tracks']:
             track_ids.append("spotify:track:" + track['id'])
 
-    return track_ids
+    track_number = int(input("How many tracks would you like?\n"))
+    new_track_ids = list( dict.fromkeys(track_ids) )
+    final_list = new_track_ids[:track_number] 
+
+    return final_list
 
 def create_new_playlist(playlist, track_ids):
     sp.playlist_add_items(playlist, track_ids, position=None)
@@ -35,14 +39,15 @@ def create_new_playlist(playlist, track_ids):
 def main():
     user_id = sp.me()['id']
     artist_name = input("Please enter an artist:\n")
-    playlist_name = str("IIL: " + artist_name)
-    playlist = sp.user_playlist_create(user_id, playlist_name)
     artist = get_artist(artist_name)
     if artist:
+        playlist_name = str("IIL: " + artist_name.title())
+        playlist = sp.user_playlist_create(user_id, playlist_name)
         track_ids = get_recommendations_for_artist(artist)
         create_new_playlist(playlist['id'], track_ids)
     else:
-        logger.error("Can't find that artist", args.artist)
+        print("Couldn't find artist, try again?")
+        main()
     
 
 
