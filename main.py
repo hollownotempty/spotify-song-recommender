@@ -57,8 +57,6 @@ def main():
 
 
 if __name__ == '__main__':
-    logger = logging.getLogger('examples.artist_recommendations')
-    logging.basicConfig(level='INFO')
     scope = 'playlist-modify-public'
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
