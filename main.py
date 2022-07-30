@@ -9,16 +9,6 @@ import os
 if os.path.isfile('env.py'):
     import env # all the spotify credentials stored in an env.py file
 
-
-def get_args():
-    parser = argparse.ArgumentParser(description='Creates a playlist for user')
-    parser.add_argument('-p', '--playlist', required=True,
-                        help='Name of Playlist')
-    parser.add_argument('-d', '--description', required=False, default='',
-                        help='Description of Playlist')
-    return parser.parse_args()
-
-
 def get_artist(name):
     results = sp.search(q='artist:' + name, type='artist', limit=50)
     items = results['artists']['items']
@@ -29,10 +19,11 @@ def get_artist(name):
 
 
 def get_recommendations_for_artist(artist):
-    results = sp.recommendations(seed_artists=[artist['id']])
     track_ids = []
-    for track in results['tracks']:
-        track_ids.append("spotify:track:" + track['id'])
+    for i in range(5):
+        results = sp.recommendations(seed_artists=[artist['id']])
+        for track in results['tracks']:
+            track_ids.append("spotify:track:" + track['id'])
 
     return track_ids
 
@@ -42,10 +33,10 @@ def create_new_playlist(playlist, track_ids):
 
 
 def main():
-    args = get_args()
     user_id = sp.me()['id']
-    playlist = sp.user_playlist_create(user_id, args.playlist)
     artist_name = input("Please enter an artist:\n")
+    playlist_name = str("IIL: " + artist_name)
+    playlist = sp.user_playlist_create(user_id, playlist_name)
     artist = get_artist(artist_name)
     if artist:
         track_ids = get_recommendations_for_artist(artist)
